@@ -58,4 +58,90 @@ const gameBoard = (() => {
     }
 )();
 
-console.log(gameBoard.rowOne);
+
+// player object
+const Player = () => {
+
+    // we can change this to false to use AI
+    let human = true;
+    // keep track of our score
+    let roundsWon = 0;
+    // who won last round will start this round
+    let wonLastRound = false;
+    // determine who won
+    let gameState = 'playing';
+    // whose turn is it
+    let playerTurn = false;
+    // what player are they
+    let playerRole = null;
+    //getter functions
+    const getHuman = () => {
+        return human;
+    };
+    const getRoundsWon = () => {
+        return roundsWon;
+    };
+    const getwonLastRound = () => {
+        return wonLastRound;
+    };
+    const getGameState = () => {
+        return gameState;
+    };
+    const getPlayerTurn = () => {
+        return playerTurn;
+    };
+    const getPlayerRole = () => {
+        return playerRole;
+    };
+    // setter functions
+    const selectPlayerAI = () => {
+        human = false;
+    };
+    const selectPlayerHuman = () => {
+        human = true;
+    };
+    const tallyRoundWon = () => {
+        roundsWon += 1;
+        wonLastRound = true;
+        // first to three wins
+        if(roundsWon >= 3){
+            gameState = 'win';
+        }
+    };
+    // reset who starts next round
+    const resetWonLastRound = () => {
+        wonLastRound = false;
+    };
+    const beginPlayerTurn = () => {
+        playerTurn = true;
+    }
+    const endPlayerTurn = () => {
+        playerTurn = false;
+    };
+    const setPlayerRole = (role) => {
+
+        // error checking
+        if(role !== 'O' && role !== 'X'){
+            throw 'Player role must either be X or O';
+        }
+
+        playerRole = role;
+    };
+
+    return{
+        getHuman,
+        getRoundsWon,
+        getwonLastRound,
+        getGameState,
+        getPlayerTurn,
+        getPlayerRole,
+        selectPlayerAI,
+        selectPlayerHuman,
+        tallyRoundWon,
+        resetWonLastRound,
+        beginPlayerTurn,
+        endPlayerTurn,
+        setPlayerRole,
+    };
+}
+
