@@ -5,6 +5,15 @@ const gameBoard = (() => {
     let rowTwo = [null, null, null];
     let rowThree = [null, null, null];
 
+    const getBoardData = () => {
+        let boardData = [
+            rowOne,
+            rowTwo,
+            rowThree,
+        ]
+        return boardData;
+    };
+
     const playBoardSpace = (playerRole, rowIndex, columnIndex) => {
 
         // error checking
@@ -36,21 +45,19 @@ const gameBoard = (() => {
             rowThree[columnIndex] = playerRole;
         }
 
-    }
+    };
     
     const clearBoard = () => {
 
-        gameBoard.rowOne = [null, null, null];
-        gameBoard.rowTwo = [null, null, null];
-        gameBoard.rowThree = [null, null, null];
+        rowOne = [null, null, null];
+        rowTwo = [null, null, null];
+        rowThree = [null, null, null];
 
     };
 
     
     return{
-        rowOne,
-        rowTwo,
-        rowThree,
+        getBoardData,
         playBoardSpace,
         clearBoard,
     };
@@ -145,3 +152,22 @@ const Player = () => {
     };
 }
 
+// the actual game of tic tac toe
+const Game = () => {
+
+    // reset our board
+    gameBoard.clearBoard();
+
+    // create our players
+    let playerOne = Player();
+
+    let playerTwo = Player();
+
+    return{
+        playerOne,
+        playerTwo,
+    }
+
+}
+
+Game();
