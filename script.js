@@ -199,16 +199,105 @@ const Game = () => {
 
     // reset our board
     gameBoard.clearBoard();
-
+    // keep track of turns and rounds
     let roundCount = 0;
+    let turnCount = 0;
 
     // create our players
     let playerOne = Player();
 
     let playerTwo = Player();
 
+    // each round where game action happens
+    const Turn = () => {
+
+        // decide who gets to play
+        // player one starts out otherwise whoever won the last round (if its the first turn)
+        if(roundCount === 0 && turnCount === 0){
+            playerOne.beginPlayerTurn();
+        } else if(playerOne.getwonLastRound() === true && turnCount === 0){
+            playerOne.beginPlayerTurn();
+        } else if(playerTwo.getwonLastRound() === true && turnCount === 0){
+            playerTwo.beginPlayerTurn();
+        }
+        // set logic to be only one player's turn at a time
+        if(playerOne.getPlayerTurn() === true){
+            playerTwo.endPlayerTurn();
+        }
+        if(playerTwo.getPlayerTurn() === true){
+            playerOne.endPlayerTurn();
+        }    
+
+        // play the game
+        switch(playerOne.getPlayerTurn()){
+            case true:
+                // user input
+                let playerOneInputRow = Number(prompt('Input player one row'));
+                console.log(typeof(playerOneInputRow));
+                let playerOneInputColumn = Number(prompt('Input player one Column'));
+                // play input
+                playerOne.playTurn(
+                    playerOneInputRow,
+                    playerOneInputColumn,
+                );
+                // display board logic
+                console.log(gameBoard.getBoardData());
+                // check if there is a win
+                gameBoard.checkWin();
+                // now its the other player's turn
+                playerTwo.beginPlayerTurn();
+                let playerTwoInputRow = Number(prompt('Input player two row'));
+                let playerTwoInputColumn = Number(prompt('Input player two Column'));
+                // play input
+                playerTwo.playTurn(
+                    playerTwoInputRow,
+                    playerTwoInputColumn,
+                );
+                // display board logic
+                console.log(gameBoard.getBoardData());
+                // check if there is a win
+                gameBoard.checkWin();
+                playerOne.beginPlayerTurn();
+                // record round
+                turnCount += 1;
+                break;
+            case false:
+                // user input
+                playerTwoInputRow = Number(prompt('Input player two row'));
+                playerTwoInputColumn = Number(prompt('Input player two Column'));
+                // play input
+                playerTwo.playTurn(
+                    playerTwoInputRow,
+                    playerTwoInputColumn,
+                );
+                // display board logic
+                console.log(gameBoard.getBoardData());
+                // check if there is a win
+                gameBoard.checkWin();
+                // now its the other player's turn
+                playerOne.beginPlayerTurn();
+                playerOneInputRow = Number(prompt('Input player one row'));
+                playerOneInputColumn = Number(prompt('Input player one Column'));
+                // play input
+                playerOne.playTurn(
+                    playerOneInputRow,
+                    playerOneInputColumn,
+                );
+                // display board logic
+                console.log(gameBoard.getBoardData());
+                // check if there is a win
+                gameBoard.checkWin();
+                playerTwo.beginPlayerTurn();
+                // record round
+                turnCount += 1;
+        }
+
+        
+
+    }
 
     return{
+        Turn,
         playerOne,
         playerTwo,
     }
