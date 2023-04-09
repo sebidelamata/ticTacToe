@@ -55,11 +55,32 @@ const gameBoard = (() => {
 
     };
 
+    const checkWin = () => {
+
+        // check if there is a tie first (no empty spaces)
+        let nullCount = 8;
+
+        for(let i = 0; i < 3; i++){
+            for(let j = 0; j< 3; j++){
+                if(gameBoard.getBoardData()[i][j] !== null){
+                    nullCount -= 1;
+                }
+            }
+        }
+
+        if(nullCount < 1){
+            console.log('Tie!');
+            clearBoard();
+        }
+
+    }
+
     
     return{
         getBoardData,
         playBoardSpace,
         clearBoard,
+        checkWin,
     };
 
     }
@@ -135,6 +156,26 @@ const Player = () => {
         playerRole = role;
     };
 
+    const playTurn = (rowIndex, columnIndex) => {
+        
+        // make sure they have a role first
+        if(getPlayerRole() === null){
+            throw 'Pick player role first';
+        }
+        // make sure its their turn
+        if(getPlayerTurn() !== true){
+            throw 'Wait your turn!';
+        }
+        // play the space
+        gameBoard.playBoardSpace(
+            getPlayerRole(),
+            rowIndex,
+            columnIndex,
+        );
+            
+        endPlayerTurn();
+    };
+
     return{
         getHuman,
         getRoundsWon,
@@ -149,6 +190,7 @@ const Player = () => {
         beginPlayerTurn,
         endPlayerTurn,
         setPlayerRole,
+        playTurn,
     };
 }
 
@@ -158,10 +200,13 @@ const Game = () => {
     // reset our board
     gameBoard.clearBoard();
 
+    let roundCount = 0;
+
     // create our players
     let playerOne = Player();
 
     let playerTwo = Player();
+
 
     return{
         playerOne,
