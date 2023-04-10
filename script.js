@@ -116,6 +116,9 @@ const Player = () => {
             gameState = 'win';
         }
     };
+    const resetGameState = () => {
+        gameState = 'playing';
+    }
     // reset who starts next round
     const resetWonLastRound = () => {
         wonLastRound = false;
@@ -166,6 +169,7 @@ const Player = () => {
         selectPlayerAI,
         selectPlayerHuman,
         tallyRoundWon,
+        resetGameState,
         resetWonLastRound,
         beginPlayerTurn,
         endPlayerTurn,
@@ -188,11 +192,6 @@ const Game = () => {
     let playerOne = Player();
 
     let playerTwo = Player();
-
-    let playerOneSelectRole = prompt('Player 1 Select Role');
-    playerOne.setPlayerRole(playerOneSelectRole);
-    let playerTwoSelectRole = prompt('Player 2 Select Role');
-    playerTwo.setPlayerRole(playerTwoSelectRole);
 
     const getTurnCount = () => {
         return turnCount;
@@ -228,12 +227,12 @@ const Game = () => {
                     playerOne.tallyRoundWon();
                     roundCount += 1;
                     roundOver = true;
-                    console.log('Player One Wins!');
+                    alert('Player One Wins!');
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[i][0]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
                     roundOver = true;
-                    console.log('Player Two Wins!');
+                    alert('Player Two Wins!');
                 }
             }
         }
@@ -244,12 +243,12 @@ const Game = () => {
                     playerOne.tallyRoundWon();
                     roundCount += 1;
                     roundOver = true;
-                    console.log('Player One Wins!');
+                    alert('Player One Wins!');
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][i]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
                     roundOver = true;
-                    console.log('Player Two Wins!');
+                    alert('Player Two Wins!');
                 }         
             }
         }
@@ -260,12 +259,12 @@ const Game = () => {
                 playerOne.tallyRoundWon();
                 roundCount += 1;
                 roundOver = true;
-                console.log('Player One Wins!');
+                alert('Player One Wins!');
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][0]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
                 roundOver = true;
-                console.log('Player Two Wins!');
+                alert('Player Two Wins!');
             }   
         }
         if(gameBoard.getBoardData()[0][2] === gameBoard.getBoardData()[1][1] && gameBoard.getBoardData()[0][2] === gameBoard.getBoardData()[2][0]){
@@ -273,12 +272,12 @@ const Game = () => {
                 playerOne.tallyRoundWon();
                 roundCount += 1;
                 roundOver = true;
-                console.log('Player One Wins!');
+                alert('Player One Wins!');
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][2]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
                 roundOver = true;
-                console.log('Player Two Wins!');
+                alert('Player Two Wins!');
             }   
         }
 
@@ -385,13 +384,39 @@ const Game = () => {
         }
     };
 
-    return{
-        playerOne,
-        playerTwo,
-        Turn,
-        Round,
+    // finally the game consists of the logic on rounds
+    newGame = confirm('Start new game?');
+
+    while(newGame === true){
+
+        // select players first
+        let playerOneSelectRole = prompt('Player 1 Select Role');
+        playerOne.setPlayerRole(playerOneSelectRole);
+        let playerTwoSelectRole = prompt('Player 2 Select Role');
+        playerTwo.setPlayerRole(playerTwoSelectRole);
+
+        // start game
+        while(playerOne.getGameState() === 'playing' && playerTwo.getGameState() === 'playing'){
+            Round();
+            roundCount = 0;
+            turnCount = 0;
+            roundOver = false;
+        }
+
+        if(playerOne.getGameState() === 'win'){
+            alert('Player One Wins the Game!');
+            playerOne.resetGameState();
+            newGame = confirm('Start new Game?');
+        }
+        if(playerTwo.getGameState() === 'win'){
+            alert('Player Two Wins the Game!');
+            playerTwo.resetGameState();
+            newGame = confirm('Start new Game?');
+        }
+
+
     }
 
 }
 
-test = Game();
+Game();
