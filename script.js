@@ -1,6 +1,16 @@
 
 const gameBoard = (() => {
 
+    let occupiedSpaceTestPass = false;
+
+    const getOccupiedSpaceTestPass = () => {
+        return occupiedSpaceTestPass;
+    }
+
+    const resetOccupiedSpaceTestPass = () => {
+        occupiedSpaceTestPass = false;
+    }
+
     let rowOne = [null, null, null];
     let rowTwo = [null, null, null];
     let rowThree = [null, null, null];
@@ -13,6 +23,7 @@ const gameBoard = (() => {
         ]
         return boardData;
     };
+
 
     const playBoardSpace = (playerRole, rowIndex, columnIndex) => {
 
@@ -30,20 +41,26 @@ const gameBoard = (() => {
         // make sure someone hasn't already played the space as well
         if(rowIndex === 0){
             if(rowOne[columnIndex] !== null){
-                throw 'Error, board space already occupied';
+                alert('Error, board space already occupied');
+                return;
             }
             rowOne[columnIndex] = playerRole;
         } else if(rowIndex === 1){
             if(rowTwo[columnIndex] !== null){
-                throw 'Error, board space already occupied';
+                alert('Error, board space already occupied');
+                return;
             }
             rowTwo[columnIndex] = playerRole;
         } else if(rowIndex === 2){
             if(rowThree[columnIndex] !== null){
-                throw 'Error, board space already occupied';
+                alert('Error, board space already occupied');
+                return;
             }
             rowThree[columnIndex] = playerRole;
         }
+
+        // if it made it this far, it isn't going in an occupied space
+        occupiedSpaceTestPass = true; 
 
     };
     
@@ -60,6 +77,8 @@ const gameBoard = (() => {
         getBoardData,
         playBoardSpace,
         clearBoard,
+        getOccupiedSpaceTestPass,
+        resetOccupiedSpaceTestPass,
     };
 
     }
@@ -155,8 +174,6 @@ const Player = () => {
             rowIndex,
             columnIndex,
         );
-            
-        endPlayerTurn();
     };
 
     return{
@@ -215,9 +232,10 @@ const Game = () => {
         }
 
         if(nullCount < 1){
-            console.log('Tie!');
-            turnCount = 0;
-            clearBoard();
+            roundCount += 1;
+            roundOver = true;
+            gameBoard.clearBoard();
+            alert('Tie!');
         }
 
         // check if there is a win across rows
@@ -308,14 +326,18 @@ const Game = () => {
             case true:
                 // user input
                 if(getRoundOver() === false){
-                    let playerOneInputRow = Number(prompt('Input player one row'));
-                    console.log(typeof(playerOneInputRow));
-                    let playerOneInputColumn = Number(prompt('Input player one Column'));
-                    // play input
-                    playerOne.playTurn(
-                        playerOneInputRow,
-                        playerOneInputColumn,
-                    );
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        let playerOneInputRow = Number(prompt('Input player one row'));
+                        let playerOneInputColumn = Number(prompt('Input player one Column'));
+                        // play input
+                        playerOne.playTurn(
+                            playerOneInputRow,
+                            playerOneInputColumn,
+                        );
+                    }
+                    playerOne.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
                     // display board logic
                     console.log(gameBoard.getBoardData());
                     // check if there is a win
@@ -324,13 +346,18 @@ const Game = () => {
                     playerTwo.beginPlayerTurn();
                 }
                 if(getRoundOver() === false){
-                    let playerTwoInputRow = Number(prompt('Input player two row'));
-                    let playerTwoInputColumn = Number(prompt('Input player two Column'));
-                    // play input
-                    playerTwo.playTurn(
-                        playerTwoInputRow,
-                        playerTwoInputColumn,
-                    );
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        let playerTwoInputRow = Number(prompt('Input player two row'));
+                        let playerTwoInputColumn = Number(prompt('Input player two Column'));
+                        // play input
+                        playerTwo.playTurn(
+                            playerTwoInputRow,
+                            playerTwoInputColumn,
+                        );
+                    }
+                    playerTwo.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
                     // display board logic
                     console.log(gameBoard.getBoardData());
                     // check if there is a win
@@ -343,13 +370,18 @@ const Game = () => {
             case false:
                 // user input
                 if(getRoundOver() === false){
-                    playerTwoInputRow = Number(prompt('Input player two row'));
-                    playerTwoInputColumn = Number(prompt('Input player two Column'));
-                    // play input
-                    playerTwo.playTurn(
-                        playerTwoInputRow,
-                        playerTwoInputColumn,
-                    );
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        playerTwoInputRow = Number(prompt('Input player two row'));
+                        playerTwoInputColumn = Number(prompt('Input player two Column'));
+                        // play input
+                        playerTwo.playTurn(
+                            playerTwoInputRow,
+                            playerTwoInputColumn,
+                        );
+                    }
+                    playerTwo.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
                     // display board logic
                     console.log(gameBoard.getBoardData());
                     // check if there is a win
@@ -358,13 +390,18 @@ const Game = () => {
                     playerOne.beginPlayerTurn();
                 }
                 if(getRoundOver() === false){
-                    playerOneInputRow = Number(prompt('Input player one row'));
-                    playerOneInputColumn = Number(prompt('Input player one Column'));
-                    // play input
-                    playerOne.playTurn(
-                        playerOneInputRow,
-                        playerOneInputColumn,
-                    );
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        playerOneInputRow = Number(prompt('Input player one row'));
+                        playerOneInputColumn = Number(prompt('Input player one Column'));
+                        // play input
+                        playerOne.playTurn(
+                            playerOneInputRow,
+                            playerOneInputColumn,
+                        );
+                    }
+                    playerOne.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
                     // display board logic
                     console.log(gameBoard.getBoardData());
                     // check if there is a win
@@ -392,8 +429,15 @@ const Game = () => {
         // select players first
         let playerOneSelectRole = prompt('Player 1 Select Role');
         playerOne.setPlayerRole(playerOneSelectRole);
+
         let playerTwoSelectRole = prompt('Player 2 Select Role');
         playerTwo.setPlayerRole(playerTwoSelectRole);
+
+        // make sure player roles are unique
+        while(playerOne.getPlayerRole() === playerTwo.getPlayerRole()){
+            playerTwoSelectRole = prompt('Role Already Selected By Player One, Select a Different Role');
+            playerTwo.setPlayerRole(playerTwoSelectRole);
+        }
 
         // start game
         while(playerOne.getGameState() === 'playing' && playerTwo.getGameState() === 'playing'){
