@@ -37,3 +37,13 @@ body{
     grid-area: footer;
     background-color: rgb(57, 186, 143);
 }
+
+#game-container{
+    display: grid;
+    background-color: cornflowerblue;
+    border-style: solid;
+    height: 70vh;
+    width: 70vh;
+    border-width: 4px;
+    border-radius: 20%;
+}

@@ -1,3 +1,5 @@
+const bodyDiv = document.querySelector('#body');
+console.log(bodyDiv);
 
 const gameBoard = (() => {
 
@@ -464,3 +466,21 @@ const Game = () => {
 }
 
 //Game();
+
+
+
+
+//// UI stuff
+
+
+
+// creates our visual gameboard
+const createBoard = () => {
+    let gameContainer = document.createElement('div');
+    gameContainer.setAttribute('id', 'game-container');
+
+    bodyDiv.appendChild(gameContainer);
+}
+
+
+createBoard();
