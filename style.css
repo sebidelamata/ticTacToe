@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: grid;
+    grid-template-areas: "header"
+    "body"
+    "footer";
+    grid-template-rows: 128px 1fr 48px;
+    grid-template-columns: 1fr;
+    height:100vh;
+
+}
+
+#header{
+    display: grid;
+    grid-area: header;
+    background-color: rgb(57, 186, 143);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-size: 10vh;
+}
+
+#body{
+    display: grid;
+    grid-area: body;
+    background-color: floralwhite;
+    align-items: center;
+    justify-content: center;
+}
+
+#footer{
+    display: grid;
+    grid-area: footer;
+    background-color: rgb(57, 186, 143);
+}
