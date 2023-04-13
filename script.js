@@ -479,6 +479,56 @@ const createBoard = () => {
     let gameContainer = document.createElement('div');
     gameContainer.setAttribute('id', 'game-container');
 
+    let boardRowOne = document.createElement('div');
+    boardRowOne.setAttribute('id', 'row-one');
+    let boardRowOneColOne = document.createElement('div');
+    boardRowOneColOne.setAttribute('id', 'row-one-col-one');
+    boardRowOneColOne.setAttribute('class', 'game-square');
+    let boardRowOneColTwo = document.createElement('div');
+    boardRowOneColTwo.setAttribute('id', 'row-one-col-two');
+    boardRowOneColTwo.setAttribute('class', 'game-square');
+    let boardRowOneColThree = document.createElement('div');
+    boardRowOneColThree.setAttribute('id', 'row-one-col-three');
+    boardRowOneColThree.setAttribute('class', 'game-square');
+    boardRowOne.appendChild(boardRowOneColOne);
+    boardRowOne.appendChild(boardRowOneColTwo);
+    boardRowOne.appendChild(boardRowOneColThree);
+
+    let boardRowTwo = document.createElement('div');
+    boardRowTwo.setAttribute('id', 'row-two');
+    let boardRowTwoColOne = document.createElement('div');
+    boardRowTwoColOne.setAttribute('id', 'row-two-col-one');
+    boardRowTwoColOne.setAttribute('class', 'game-square');
+    let boardRowTwoColTwo = document.createElement('div');
+    boardRowTwoColTwo.setAttribute('id', 'row-two-col-two');
+    boardRowTwoColTwo.setAttribute('class', 'game-square');
+    let boardRowTwoColThree = document.createElement('div');
+    boardRowTwoColThree.setAttribute('id', 'row-two-col-three');
+    boardRowTwoColThree.setAttribute('class', 'game-square');
+    boardRowTwo.appendChild(boardRowTwoColOne);
+    boardRowTwo.appendChild(boardRowTwoColTwo);
+    boardRowTwo.appendChild(boardRowTwoColThree);
+
+
+    let boardRowThree = document.createElement('div');
+    boardRowThree.setAttribute('id', 'row-three');
+    let boardRowThreeColOne = document.createElement('div');
+    boardRowThreeColOne.setAttribute('id', 'row-three-col-one');
+    boardRowThreeColOne.setAttribute('class', 'game-square');
+    let boardRowThreeColTwo = document.createElement('div');
+    boardRowThreeColTwo.setAttribute('id', 'row-three-col-two');
+    boardRowThreeColTwo.setAttribute('class', 'game-square');
+    let boardRowThreeColThree = document.createElement('div');
+    boardRowThreeColThree.setAttribute('id', 'row-three-col-three');
+    boardRowThreeColThree.setAttribute('class', 'game-square');
+    boardRowThree.appendChild(boardRowThreeColOne);
+    boardRowThree.appendChild(boardRowThreeColTwo);
+    boardRowThree.appendChild(boardRowThreeColThree);
+    
+    gameContainer.appendChild(boardRowOne);
+    gameContainer.appendChild(boardRowTwo);
+    gameContainer.appendChild(boardRowThree);
+
     bodyDiv.appendChild(gameContainer);
 }
 
