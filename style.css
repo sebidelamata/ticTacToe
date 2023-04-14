@@ -39,6 +39,70 @@ body{
     background-color: rgb(57, 186, 143);
 }
 
+#select-player-container{
+    display: grid;
+    background-color: rgb(57, 186, 143);
+    height: 40vh;
+    width: 80vw;
+    color: floralwhite;
+    grid-template: 1fr / 1fr 1fr 1fr;
+}
+
+#div-left,
+#div-right{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: 25vh;
+    font-weight: 900;
+    -webkit-transition: color 1s, font-size 1s ease-out; /* For Safari 3.0 to 6.0 */
+    transition: color 1s, font-size 1s ease-out; /* For modern browsers */
+}
+#div-left:hover,
+#div-right:hover{
+    color: cornflowerblue;
+    font-size: 27vh;
+}
+
+#div-middle{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+}
+
+#new-game-container{
+    display: grid;
+    background-color: rgb(57, 186, 143);
+    height: 30vh;
+    width: 65vw;
+    color: floralwhite;
+    grid-template: 1fr / 1fr 1fr 1fr;
+    padding: 8px;
+}
+#new-game-left,
+#new-game-right{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: 25vh;
+    font-weight: 900;
+    -webkit-transition: color 1s, font-size 1s ease-out; /* For Safari 3.0 to 6.0 */
+    transition: color 1s, font-size 1s ease-out; /* For modern browsers */
+}
+#new-game-left:hover,
+#new-game-right:hover{
+    color: cornflowerblue;
+    font-size: 27vh;
+}
+#new-game-middle{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    font-weight: 900;
+}
+
 #game-container{
     display: grid;
     grid-template: 1fr 1fr 1fr / 1fr;

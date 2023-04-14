@@ -1,5 +1,9 @@
 const bodyDiv = document.querySelector('#body');
-console.log(bodyDiv);
+let newGame;
+
+    const setNewGame = () => {
+        newGame = true;
+    }
 
 const gameBoard = (() => {
 
@@ -197,6 +201,11 @@ const Player = () => {
     };
 }
 
+// create our players
+let playerOne = Player();
+
+let playerTwo = Player();
+
 // the actual game of tic tac toe
 const Game = () => {
 
@@ -206,11 +215,6 @@ const Game = () => {
     let roundCount = 0;
     let turnCount = 0;
     let roundOver = false;
-
-    // create our players
-    let playerOne = Player();
-
-    let playerTwo = Player();
 
     const getTurnCount = () => {
         return turnCount;
@@ -422,24 +426,10 @@ const Game = () => {
             Turn();
         }
     };
-
-    // finally the game consists of the logic on rounds
-    newGame = confirm('Start new game?');
-
-    while(newGame === true){
-
-        // select players first
-        let playerOneSelectRole = prompt('Player 1 Select Role');
-        playerOne.setPlayerRole(playerOneSelectRole);
-
-        let playerTwoSelectRole = prompt('Player 2 Select Role');
-        playerTwo.setPlayerRole(playerTwoSelectRole);
-
-        // make sure player roles are unique
-        while(playerOne.getPlayerRole() === playerTwo.getPlayerRole()){
-            playerTwoSelectRole = prompt('Role Already Selected By Player One, Select a Different Role');
-            playerTwo.setPlayerRole(playerTwoSelectRole);
-        }
+    // logic to start a new game
+    
+    //newGame = confirm('Start new game?');
+    while(newGame === true && playerOne.getPlayerRole() !== null && playerTwo.getPlayerRole() !== null){
 
         // start game
         while(playerOne.getGameState() === 'playing' && playerTwo.getGameState() === 'playing'){
@@ -452,12 +442,12 @@ const Game = () => {
         if(playerOne.getGameState() === 'win'){
             alert('Player One Wins the Game!');
             playerOne.resetGameState();
-            newGame = confirm('Start new Game?');
+            createNewGameForm();
         }
         if(playerTwo.getGameState() === 'win'){
             alert('Player Two Wins the Game!');
             playerTwo.resetGameState();
-            newGame = confirm('Start new Game?');
+            createNewGameForm();
         }
 
 
@@ -465,14 +455,100 @@ const Game = () => {
 
 }
 
-//Game();
-
-
-
 
 //// UI stuff
 
+// create player selection form
+const createNewGameForm = () => {
 
+    let selectPlayerContainer = document.createElement('div');
+    selectPlayerContainer.setAttribute('id', 'new-game-container');
+
+    let divLeft = document.createElement('div');
+    divLeft.setAttribute('id', 'new-game-left');
+    divLeft.setAttribute('class', 'new-game-div');
+    let divLeftText = document.createTextNode('Yes');
+    divLeft.appendChild(divLeftText);
+    let divMiddle = document.createElement('div');
+    divMiddle.setAttribute('id', 'new-game-middle')
+    let divMiddleText = document.createTextNode('Start New Game');
+    divMiddle.appendChild(divMiddleText);
+    let divRight = document.createElement('div');
+    divRight.setAttribute('id', 'new-game-right')
+    divRight.setAttribute('class', 'new-game-div');
+    let divRightText = document.createTextNode('No');
+    divRight.appendChild(divRightText);
+
+    selectPlayerContainer.appendChild(divLeft);
+    selectPlayerContainer.appendChild(divMiddle);
+    selectPlayerContainer.appendChild(divRight);
+
+    bodyDiv.appendChild(selectPlayerContainer);
+
+    newGameForm = document.querySelectorAll('.new-game-div');
+
+    newGameForm.forEach(divs => {
+        divs.addEventListener('click', function(){
+            if(divs.id === 'new-game-left'){
+                // select players first
+                selectPlayerContainer.remove();
+                createSelectPlayerForm();
+                setNewGame();
+            }
+        })
+    })
+
+    console.log(newGame);
+
+}
+
+// create player selection form
+const createSelectPlayerForm = () => {
+
+    let selectPlayerContainer = document.createElement('div');
+    selectPlayerContainer.setAttribute('id', 'select-player-container');
+
+    let divLeft = document.createElement('div');
+    divLeft.setAttribute('id', 'div-left');
+    divLeft.setAttribute('class', 'selection-div');
+    let divLeftText = document.createTextNode('\u2715');
+    divLeft.appendChild(divLeftText);
+    let divMiddle = document.createElement('div');
+    divMiddle.setAttribute('id', 'div-middle')
+    let divMiddleText = document.createTextNode('Player 1 Select Character');
+    divMiddle.appendChild(divMiddleText);
+    let divRight = document.createElement('div');
+    divRight.setAttribute('id', 'div-right')
+    divRight.setAttribute('class', 'selection-div');
+    let divRightText = document.createTextNode('\u25EF');
+    divRight.appendChild(divRightText);
+
+    selectPlayerContainer.appendChild(divLeft);
+    selectPlayerContainer.appendChild(divMiddle);
+    selectPlayerContainer.appendChild(divRight);
+
+    bodyDiv.appendChild(selectPlayerContainer);
+
+    let selectionDivs = document.querySelectorAll('.selection-div');
+
+        selectionDivs.forEach(divs => {
+            divs.addEventListener('click', function(){
+                if(divs.id === 'div-left'){
+                    playerOne.setPlayerRole('X');
+                    let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
+                    playerTwo.setPlayerRole(playerTwoSelectRole);
+                    Game();
+                } else if(divs.id === 'div-right'){
+                    playerOne.setPlayerRole('O');
+                    let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
+                    playerTwo.setPlayerRole(playerTwoSelectRole);
+                    Game();
+                }
+            })
+        });
+
+
+}
 
 // creates our visual gameboard
 const createBoard = () => {
@@ -533,4 +609,4 @@ const createBoard = () => {
 }
 
 
-createBoard();
+createNewGameForm();
