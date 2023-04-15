@@ -1,9 +1,25 @@
 const bodyDiv = document.querySelector('#body');
 let newGame;
+let roundCount = 0;
+let turnCount = 0;
+let boardInputs = [];
+let roundOver = false;
 
-    const setNewGame = () => {
-        newGame = true;
-    }
+const getRoundOver = () => {
+    return roundOver;
+};
+
+const setRoundOver = () => {
+    roundOver = true;
+}
+
+const setNewGame = () => {
+    newGame = true;
+}
+
+const updateBoardInputs = (inputArray) => {
+    boardInputs = inputArray;
+}
 
 const gameBoard = (() => {
 
@@ -206,23 +222,11 @@ let playerOne = Player();
 
 let playerTwo = Player();
 
-// the actual game of tic tac toe
-const Game = () => {
-
     // reset our board
     gameBoard.clearBoard();
     // keep track of turns and rounds
-    let roundCount = 0;
-    let turnCount = 0;
-    let roundOver = false;
-
-    const getTurnCount = () => {
-        return turnCount;
-    };
-
-    const getRoundOver = () => {
-        return roundOver;
-    };
+    roundCount = 0;
+    turnCount = 0;
 
     const checkWin = () => {
 
@@ -239,7 +243,7 @@ const Game = () => {
 
         if(nullCount < 1){
             roundCount += 1;
-            roundOver = true;
+            setRoundOver();
             gameBoard.clearBoard();
             alert('Tie!');
         }
@@ -250,12 +254,12 @@ const Game = () => {
                 if(playerOne.getPlayerRole() === gameBoard.getBoardData()[i][0]){
                     playerOne.tallyRoundWon();
                     roundCount += 1;
-                    roundOver = true;
+                    setRoundOver();
                     alert('Player One Wins!');
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[i][0]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
-                    roundOver = true;
+                    setRoundOver();
                     alert('Player Two Wins!');
                 }
             }
@@ -266,12 +270,12 @@ const Game = () => {
                 if(playerOne.getPlayerRole() === gameBoard.getBoardData()[0][i]){
                     playerOne.tallyRoundWon();
                     roundCount += 1;
-                    roundOver = true;
+                    setRoundOver();
                     alert('Player One Wins!');
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][i]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
-                    roundOver = true;
+                    setRoundOver();
                     alert('Player Two Wins!');
                 }         
             }
@@ -282,12 +286,12 @@ const Game = () => {
             if(playerOne.getPlayerRole() === gameBoard.getBoardData()[0][0]){
                 playerOne.tallyRoundWon();
                 roundCount += 1;
-                roundOver = true;
+                setRoundOver();
                 alert('Player One Wins!');
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][0]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
-                roundOver = true;
+                setRoundOver();
                 alert('Player Two Wins!');
             }   
         }
@@ -295,12 +299,12 @@ const Game = () => {
             if(playerOne.getPlayerRole() === gameBoard.getBoardData()[0][2]){
                 playerOne.tallyRoundWon();
                 roundCount += 1;
-                roundOver = true;
+                setRoundOver();
                 alert('Player One Wins!');
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][2]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
-                roundOver = true;
+                setRoundOver();
                 alert('Player Two Wins!');
             }   
         }
@@ -325,7 +329,7 @@ const Game = () => {
         }
         if(playerTwo.getPlayerTurn() === true){
             playerOne.endPlayerTurn();
-        }    
+        }   
 
         // if it doesnt meet the exceptions above then its just whever's turn it is
         switch(playerOne.getPlayerTurn()){
@@ -334,8 +338,8 @@ const Game = () => {
                 if(getRoundOver() === false){
                     // make sure its a free space
                     while(gameBoard.getOccupiedSpaceTestPass() == false){
-                        let playerOneInputRow = Number(prompt('Input player one row'));
-                        let playerOneInputColumn = Number(prompt('Input player one Column'));
+                        let playerOneInputRow = boardInputs[0];
+                        let playerOneInputColumn = boardInputs[1];
                         // play input
                         playerOne.playTurn(
                             playerOneInputRow,
@@ -427,7 +431,6 @@ const Game = () => {
         }
     };
     // logic to start a new game
-    
     //newGame = confirm('Start new game?');
     while(newGame === true && playerOne.getPlayerRole() !== null && playerTwo.getPlayerRole() !== null){
 
@@ -453,7 +456,7 @@ const Game = () => {
 
     }
 
-}
+
 
 
 //// UI stuff
@@ -461,8 +464,8 @@ const Game = () => {
 // create player selection form
 const createNewGameForm = () => {
 
-    let selectPlayerContainer = document.createElement('div');
-    selectPlayerContainer.setAttribute('id', 'new-game-container');
+    let newGameContainer = document.createElement('div');
+    newGameContainer.setAttribute('id', 'new-game-container');
 
     let divLeft = document.createElement('div');
     divLeft.setAttribute('id', 'new-game-left');
@@ -479,11 +482,11 @@ const createNewGameForm = () => {
     let divRightText = document.createTextNode('No');
     divRight.appendChild(divRightText);
 
-    selectPlayerContainer.appendChild(divLeft);
-    selectPlayerContainer.appendChild(divMiddle);
-    selectPlayerContainer.appendChild(divRight);
+    newGameContainer.appendChild(divLeft);
+    newGameContainer.appendChild(divMiddle);
+    newGameContainer.appendChild(divRight);
 
-    bodyDiv.appendChild(selectPlayerContainer);
+    bodyDiv.appendChild(newGameContainer);
 
     newGameForm = document.querySelectorAll('.new-game-div');
 
@@ -491,14 +494,12 @@ const createNewGameForm = () => {
         divs.addEventListener('click', function(){
             if(divs.id === 'new-game-left'){
                 // select players first
-                selectPlayerContainer.remove();
-                createSelectPlayerForm();
+                newGameContainer.remove();
                 setNewGame();
+                createSelectPlayerForm();
             }
         })
     })
-
-    console.log(newGame);
 
 }
 
@@ -531,24 +532,25 @@ const createSelectPlayerForm = () => {
 
     let selectionDivs = document.querySelectorAll('.selection-div');
 
-        selectionDivs.forEach(divs => {
-            divs.addEventListener('click', function(){
-                if(divs.id === 'div-left'){
-                    playerOne.setPlayerRole('X');
-                    let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
-                    playerTwo.setPlayerRole(playerTwoSelectRole);
-                    Game();
-                } else if(divs.id === 'div-right'){
-                    playerOne.setPlayerRole('O');
-                    let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
-                    playerTwo.setPlayerRole(playerTwoSelectRole);
-                    Game();
-                }
-            })
-        });
+    selectionDivs.forEach(divs => {
+        divs.addEventListener('click', function(){
+            if(divs.id === 'div-left'){
+                playerOne.setPlayerRole('X');
+                let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
+                playerTwo.setPlayerRole(playerTwoSelectRole);
+                selectPlayerContainer.remove();
+                createBoard();
+            } else if(divs.id === 'div-right'){
+                playerOne.setPlayerRole('O');
+                let playerTwoSelectRole = playerOne.getPlayerRole() == 'X' ? 'O' : 'X';
+                playerTwo.setPlayerRole(playerTwoSelectRole);
+                selectPlayerContainer.remove();
+                createBoard();
+            }
+        })
+    });
 
-
-}
+};
 
 // creates our visual gameboard
 const createBoard = () => {
@@ -606,7 +608,134 @@ const createBoard = () => {
     gameContainer.appendChild(boardRowThree);
 
     bodyDiv.appendChild(gameContainer);
-}
+
+    SelectSquare();
+};
+
+// select before logic
+const SelectSquare = () => {
+        
+    let gamesquares = document.querySelectorAll('.game-square');
+    
+    let coordsOut = [];
+
+    const inputClickAsCoords = (e) => {
+
+        if(e.target.id === 'row-one-col-one'){
+            coordsOut = [0, 0];
+        } else if(e.target.id === 'row-one-col-two'){
+            coordsOut = [0, 1];
+        } else if(e.target.id === 'row-one-col-three'){
+            coordsOut = [0, 2];
+        } else if(e.target.id === 'row-two-col-one'){
+            coordsOut = [1, 0];
+        } else if(e.target.id === 'row-two-col-two'){
+            coordsOut = [1, 1];
+        } else if(e.target.id === 'row-two-col-three'){
+            coordsOut = [1, 2];
+        } else if(e.target.id === 'row-three-col-one'){
+            coordsOut = [2, 0];
+        } else if(e.target.id === 'row-three-col-two'){
+            coordsOut = [2, 1];
+        } else if(e.target.id === 'row-three-col-three'){
+            coordsOut = [2, 2];
+        } 
+
+    console.log(coordsOut);
+
+     // decide who gets to play
+        // player one starts out otherwise whoever won the last round (if its the first turn)
+        if(roundCount === 0 && turnCount === 0){
+            playerOne.beginPlayerTurn();
+        } else if(playerOne.getwonLastRound() === true && turnCount === 0){
+            playerOne.beginPlayerTurn();
+        } else if(playerTwo.getwonLastRound() === true && turnCount === 0){
+            playerTwo.beginPlayerTurn();
+        }
+        // set logic to be only one player's turn at a time
+        if(playerOne.getPlayerTurn() === true){
+            playerTwo.endPlayerTurn();
+        }
+        if(playerTwo.getPlayerTurn() === true){
+            playerOne.endPlayerTurn();
+        }   
+
+        // if it doesnt meet the exceptions above then its just whever's turn it is
+        switch(playerOne.getPlayerTurn()){
+            case true:
+                // user input
+                if(getRoundOver() === false){
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        let playerOneInputRow = coordsOut[0];
+                        let playerOneInputColumn = coordsOut[1];
+                        // play input
+                        playerOne.playTurn(
+                            playerOneInputRow,
+                            playerOneInputColumn,
+                        );
+                        if(playerOne.getPlayerRole() === 'X'){
+                            playerMark = document.createTextNode('\u2715');
+                            e.target.appendChild(playerMark);
+                        } 
+                        if(playerOne.getPlayerRole() === 'O'){
+                            playerMark = document.createTextNode('\u25EF');
+                            e.target.appendChild(playerMark);
+                        }
+                    }
+                    playerOne.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
+                    // display board logic
+                    console.log(gameBoard.getBoardData());
+                    // check if there is a win
+                    checkWin();
+                    // now its the other player's turn
+                    playerTwo.beginPlayerTurn();
+                }
+                // record turn
+                turnCount += 1;
+                break;
+            case false:
+                // user input
+                if(getRoundOver() === false){
+                    // make sure its a free space
+                    while(gameBoard.getOccupiedSpaceTestPass() == false){
+                        playerTwoInputRow = coordsOut[0];
+                        playerTwoInputColumn = coordsOut[1];
+                        // play input
+                        playerTwo.playTurn(
+                            playerTwoInputRow,
+                            playerTwoInputColumn,
+                        );
+                        if(playerTwo.getPlayerRole() === 'X'){
+                            playerMark = document.createTextNode('\u2715');
+                            e.target.appendChild(playerMark);
+                        } 
+                        if(playerTwo.getPlayerRole() === 'O'){
+                            playerMark = document.createTextNode('\u25EF');
+                            e.target.appendChild(playerMark);
+                        }
+                    }
+                    playerTwo.endPlayerTurn();
+                    gameBoard.resetOccupiedSpaceTestPass();
+                    // display board logic
+                    console.log(gameBoard.getBoardData());
+                    // check if there is a win
+                    checkWin();
+                    // now its the other player's turn
+                    playerOne.beginPlayerTurn();
+                }
+                // record turn
+                turnCount += 1;
+    
+        }
+    }
+    
+    gamesquares.forEach(gamesquare => {
+        gamesquare.addEventListener('click', inputClickAsCoords);
+    });
+
+};
 
 
 createNewGameForm();

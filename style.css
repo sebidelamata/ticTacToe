@@ -23,6 +23,7 @@ body{
     justify-content: center;
     padding: 24px;
     font-size: 10vh;
+    color: floralwhite;
 }
 
 #body{
@@ -121,7 +122,13 @@ body{
 }
 
 .game-square{
-    background-color: floralwhite;;
+    background-color: floralwhite;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: 15vh;
+    font-weight: 900;
+    color: cornflowerblue;
 }
 
 .game-square:hover{
