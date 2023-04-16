@@ -133,7 +133,42 @@ body{
 
 .game-square:hover{
     background-color: rgb(57, 186, 143);
-    -webkit-transition: background-color 1000ms linear;
-    -ms-transition: background-color 1000ms linear;
-    transition: background-color 1000ms linear;
+    -webkit-transition: color 1s, background-color 1000ms linear;
+    -ms-transition: color 1s, background-color 1000ms linear;
+    transition: color 1s, background-color 1000ms linear;
+    color: floralwhite;
+}
+
+#win-round-board{
+    display: grid;
+    background-color: rgb(57, 186, 143);
+    height: 20vh;
+    width: 45vw;
+    color: floralwhite;
+    grid-template: 1fr 1fr/ 1fr;
+    padding: 8px;
+    border-radius: 24px;
+}
+
+#top-div-win-round-board,
+#bottom-div-win-round-board{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+    font-weight: 900;
+}
+
+#bottom-div-button-win-round-board{
+    padding: 8px;
+    background-color: floralwhite;
+    color: rgb(57, 186, 143);
+    border-radius: 24px;
+}
+#bottom-div-button-win-round-board:hover{
+    background-color: cornflowerblue;
+    -webkit-transition: color 1s, background-color 1000ms linear;
+    -ms-transition: color 1s, background-color 1000ms linear;
+    transition: color 1s, background-color 1000ms linear;
+    color: floralwhite;
 }
