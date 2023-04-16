@@ -162,6 +162,9 @@ const Player = () => {
             gameState = 'win';
         }
     };
+    const resetRounds = () => {
+        roundsWon = 0;
+    }
     const resetGameState = () => {
         gameState = 'playing';
     }
@@ -219,6 +222,7 @@ const Player = () => {
         endPlayerTurn,
         setPlayerRole,
         playTurn,
+        resetRounds,
     };
 }
 
@@ -256,7 +260,7 @@ let playerTwo = Player();
             //setRoundOver();
             gameBoard.clearBoard();
             deleteBoard();
-            createWinRoundBoard();
+            createWinRoundBoard(0);
         }
 
         // check if there is a win across rows
@@ -267,13 +271,13 @@ let playerTwo = Player();
                     roundCount += 1;
                     //setRoundOver();
                     deleteBoard();
-                    createWinRoundBoard();
+                    createWinRoundBoard(1);
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[i][0]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
                     //setRoundOver();
                     deleteBoard();
-                    createWinRoundBoard();
+                    createWinRoundBoard(2);
                 }
             }
         }
@@ -285,13 +289,13 @@ let playerTwo = Player();
                     roundCount += 1;
                     //setRoundOver();
                     deleteBoard();
-                    createWinRoundBoard();
+                    createWinRoundBoard(1);
                 } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][i]){
                     playerTwo.tallyRoundWon();
                     roundCount += 1;
                     //setRoundOver();
                     deleteBoard();
-                    createWinRoundBoard();
+                    createWinRoundBoard(2);
                 }         
             }
         }
@@ -303,13 +307,13 @@ let playerTwo = Player();
                 roundCount += 1;
                 //setRoundOver();
                 deleteBoard();
-                createWinRoundBoard();
+                createWinRoundBoard(1);
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][0]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
                 //setRoundOver();
                 deleteBoard();
-                createWinRoundBoard();
+                createWinRoundBoard(2);
             }   
         }
         if(gameBoard.getBoardData()[0][2] === gameBoard.getBoardData()[1][1] && gameBoard.getBoardData()[0][2] === gameBoard.getBoardData()[2][0]){
@@ -318,13 +322,13 @@ let playerTwo = Player();
                 roundCount += 1;
                 //setRoundOver();
                 deleteBoard();
-                createWinRoundBoard();
+                createWinRoundBoard(1);
             } else if(playerTwo.getPlayerRole() === gameBoard.getBoardData()[0][2]){
                 playerTwo.tallyRoundWon();
                 roundCount += 1;
                 //setRoundOver();
                 deleteBoard();
-                createWinRoundBoard();
+                createWinRoundBoard(2);
             }   
         }
 
@@ -334,6 +338,11 @@ let playerTwo = Player();
 
 // create player selection form
 const createNewGameForm = () => {
+
+    roundCount = 0;
+    turnCount = 0;
+    boardInputs = [];
+    roundOver = false;
 
     let newGameContainer = document.createElement('div');
     newGameContainer.setAttribute('id', 'new-game-container');
@@ -603,14 +612,32 @@ const SelectSquare = () => {
 
 };
 
-const createWinRoundBoard = () => {
+const createWinRoundBoard = (inputDigit) => {
     
+    let textInput
+    
+    if(inputDigit === 0){
+        textInput = 'Round ends in a Draw! (' + roundCount + ' Rounds Played)';
+    } else if(inputDigit === 1){
+        textInput = 'Player 1 Wins This Round!' + '\n' + '(' + playerOne.getRoundsWon() + '/' + roundCount + ' Rounds)';
+    } else if(inputDigit === 2){
+        textInput = 'Player 2 Wins This Round!' + '\n' + '(' + playerTwo.getRoundsWon() + '/' + roundCount + ' Rounds)';
+    }
+
+    let buttonTextInput;
+
+    if(playerOne.getRoundsWon() >= 3 || playerTwo.getRoundsWon() >= 3){
+        buttonTextInput = 'Okay';
+    } else if(playerOne.getRoundsWon() < 3 && playerOne.getRoundsWon() < 3){
+        buttonTextInput = 'Next Round'
+    }
+
     winRoundBoard = document.createElement('div');
     winRoundBoard.setAttribute('id', 'win-round-board');
 
     topDiv = document.createElement('div');
     topDiv.setAttribute('id', 'top-div-win-round-board');
-    topDivText = document.createTextNode('Player 1 Wins This Round!');
+    topDivText = document.createTextNode(textInput);
     topDiv.appendChild(topDivText);
 
     bottomDiv = document.createElement('div');
@@ -618,7 +645,7 @@ const createWinRoundBoard = () => {
     bottomDivButton = document.createElement('div');
     bottomDivButton.setAttribute('id', 'bottom-div-button-win-round-board');
     bottomDiv.appendChild(bottomDivButton);
-    buttonText = document.createTextNode('Next Round');
+    buttonText = document.createTextNode(buttonTextInput);
     bottomDivButton.appendChild(buttonText);
 
     winRoundBoard.appendChild(topDiv);
@@ -629,10 +656,64 @@ const createWinRoundBoard = () => {
     buttonSelector = document.querySelector('#bottom-div-button-win-round-board');
     buttonSelector.addEventListener('click', () => {
             winRoundBoard.remove();
-            createBoard();
+            if(playerOne.getRoundsWon() >= 3){
+                endGame(1);
+            }
+            if(playerTwo.getRoundsWon() >= 3){
+                endGame(2);
+            }
+            if(playerOne.getRoundsWon() < 3 && playerTwo.getRoundsWon() < 3){
+                createBoard();
+            }
         });
 
 };
+
+const endGame = (inputDigits) => {
+
+    roundCount = 0;
+    turnCount = 0;
+    boardInputs = [];
+    roundOver = false;
+
+    let inputText;
+
+    if(inputDigits === 1){
+        inputText = 'Game Over! Player 1 Wins!';
+    }
+    if(inputDigits === 2){
+        inputText = 'Game Over! Player 2 Wins!';
+    }
+
+    endGameBoard = document.createElement('div');
+    endGameBoard.setAttribute('id', 'end-game-board');
+
+    topDiv = document.createElement('div');
+    topDiv.setAttribute('id', 'top-div-end-game-board');
+    topDivText = document.createTextNode(inputText);
+    topDiv.appendChild(topDivText);
+
+    bottomDiv = document.createElement('div');
+    bottomDiv.setAttribute('id', 'bottom-div-end-game-board');
+    bottomDivButton = document.createElement('div');
+    bottomDivButton.setAttribute('id', 'bottom-div-button-end-game-board');
+    bottomDiv.appendChild(bottomDivButton);
+    buttonText = document.createTextNode('Okay');
+    bottomDivButton.appendChild(buttonText);
+
+    endGameBoard.appendChild(topDiv);
+    endGameBoard.appendChild(bottomDiv);
+
+    bodyDiv.appendChild(endGameBoard);
+
+    buttonSelector = document.querySelector('#bottom-div-button-end-game-board');
+    buttonSelector.addEventListener('click', () => {
+        endGameBoard.remove();
+        playerOne.resetRounds();
+        playerTwo.resetRounds();
+        createNewGameForm();
+    });
+}
 
 
 createNewGameForm();

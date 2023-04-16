@@ -25,6 +25,13 @@ body{
     font-size: 10vh;
     color: floralwhite;
 }
+#header:hover{
+    color: cornflowerblue;
+    font-size: 12vh;
+    -webkit-transition: color 1s, font-size 1000ms linear;
+    -ms-transition: color 1s, font-size 1000ms linear;
+    transition: color 1s, font-size 1000ms linear;
+}
 
 #body{
     display: grid;
@@ -166,6 +173,39 @@ body{
     border-radius: 24px;
 }
 #bottom-div-button-win-round-board:hover{
+    background-color: cornflowerblue;
+    -webkit-transition: color 1s, background-color 1000ms linear;
+    -ms-transition: color 1s, background-color 1000ms linear;
+    transition: color 1s, background-color 1000ms linear;
+    color: floralwhite;
+}
+
+#end-game-board{
+    display: grid;
+    background-color: rgb(57, 186, 143);
+    height: 20vh;
+    width: 45vw;
+    color: floralwhite;
+    grid-template: 1fr 1fr/ 1fr;
+    padding: 8px;
+    border-radius: 24px;
+}
+#top-div-end-game-board,
+#bottom-div-end-game-board{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+    font-weight: 900;
+}
+
+#bottom-div-button-end-game-board{
+    padding: 8px;
+    background-color: floralwhite;
+    color: rgb(57, 186, 143);
+    border-radius: 24px;
+}
+#bottom-div-button-end-game-board:hover{
     background-color: cornflowerblue;
     -webkit-transition: color 1s, background-color 1000ms linear;
     -ms-transition: color 1s, background-color 1000ms linear;
